@@ -41,6 +41,13 @@ wgpu = { version = "=30.0.1", optional = true, default-features = false, feature
 # taskbar (bevy_winit's own winit).
 winit = { version = "=0.30.13", optional = true, default-features = false }
 
+# Linux and the BSDs: winit needs a display backend, X11 or Wayland, both
+# loaded at run time (no -dev packages to build).
+[target.'cfg(all(unix, not(target_vendor = "apple"), not(target_os = "android")))'.dependencies]
+winit = { version = "=0.30.13", optional = true, default-features = false, features = [
+    "rwh_06", "x11", "wayland", "wayland-dlopen", "wayland-csd-adwaita"
+] }
+
 [[bin]]
 name = "retzar"
 path = "src/main.rs"

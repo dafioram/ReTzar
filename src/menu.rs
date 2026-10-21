@@ -122,9 +122,11 @@ pub struct Settings {
 pub const NAME_LENGTH: usize = 20;
 /// Longest name of a save, as many characters as the field shows.
 pub const SAVE_NAME_LENGTH: usize = 40;
-/// The Windows user name, else the original default «Tzar 1».
+/// The user name (`USERNAME` on Windows, `USER` elsewhere), else the
+/// original default «Tzar 1».
 pub fn default_player_name() -> String {
     std::env::var("USERNAME")
+        .or_else(|_| std::env::var("USER"))
         .ok()
         .map(|n| n.trim().chars().take(NAME_LENGTH).collect::<String>())
         .filter(|n| !n.is_empty())
